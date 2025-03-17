@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本全国の個人ジュエリー作家コレクション</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Serif JP', serif;
+            background-color: #f8f8f8;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .slide-container {
+            width: 100%;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+        
+        .slide {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            position: relative;
+            scroll-snap-align: start;
+        }
+        
+        .slide-image {
+            width: 65%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .image-gallery {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 70%;
+            overflow: hidden;
+        }
+        
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .thumbnail-container {
+            width: 100%;
+            height: 30%;
+            display: flex;
+        }
+        
+        .thumbnail {
+            flex: 1;
+            height: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .thumbnail:hover img {
+            transform: scale(1.1);
+        }
+        
+        .slide:hover .main-image img {
+            transform: scale(1.05);
+        }
+        
+        .slide-content {
+            width: 35%;
+            height: 100%;
+            padding: 5% 3%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+        }
+        
+        .price-tag {
+            position: absolute;
+            top: 30px;
+            right: 40%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            z-index: 10;
+            transform: rotate(-3deg);
+        }
+        
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            color: #888;
+        }
+        
+        .designer-name {
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+        
+        .description {
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .materials {
+            margin-bottom: 2rem;
+        }
+        
+        .materials h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .materials p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .contact a {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1px solid #333;
+            color: #333;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contact a:hover {
+            background-color: #333;
+            color: white;
+        }
+        
+        .intro-slide {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1584302179602-e4c3d3fd629d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            scroll-snap-align: start;
+        }
+        
+        .intro-slide h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+        
+        .intro-slide p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .intro-slide .scroll-down {
+            position: absolute;
+            bottom: 50px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .outro-slide {
+            height: 50vh;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            scroll-snap-align: start;
+        }
+        
+        .outro-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .outro-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .outro-content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        
+        .filter-controls {
+            position: fixed;
+                top: 20px;
+            left: 20px;
+            z-index: 100;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filter-controls select {
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+        
+        .filter-controls button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="filter-controls">
+        <select id="price-filter">
+            <option value="all">すべての価格帯</option>
+            <option value="low">〜5万円</option>
+            <option value="medium">5万円〜20万円</option>
+            <option value="high">20万円〜</option>
+        </select>
+        <select id="material-filter">
+            <option value="all">すべての素材</option>
+            <option value="gold">ゴールド</option>
+            <option value="silver">シルバー</option>
+            <option value="gemstone">宝石</option>
+            <option value="other">その他素材</option>
+        </select>
+        <button id="apply-filter">絞り込む</button>
+    </div>
+
+    <div class="slide-container" id="slide-container">
+        <div class="intro-slide">
+                <h1>日本全国の個人ジュエリー作家</h1>
+            <p>伝統と革新が融合する日本のジュエリー界。一人ひとりの作家が紡ぎ出す物語は、装う人の人生に寄り添い、新たな輝きを与えてくれることでしょう。</p>
+            <div class="scroll-down">スクロールして探索する</div>
+        </div>
+
+        <!-- ここにJavaScriptでスライドが挿入されます -->
+        
+        <div class="outro-slide">
+            <div class="outro-content">
+                <h2>日本のジュエリー作家たち</h2>
+                <p>
+                    伝統と革新が融合する日本のジュエリー界。<br>
+                    一人ひとりの作家が紡ぎ出す物語は、装う人の人生に寄り添い、<br>
+                    新たな輝きを与えてくれることでしょう。
+                </p>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        // ジュエリー作家データベース
+        const jewelryDesigners = [
+            {
+                name: "石川 暢子（いしかわ のぶこ）",
+                priceRange: "高級（数百万円〜）",
+                priceCategory: "high",
+                materials: "貴金属（高純度ゴールド・プラチナなど）、宝石",
+                materialCategory: ["gold", "gemstone"],
+                description: "日本伝統工芸と西洋技術を融合した独自デザイン。緻密な彫金で芸術的な一点物を制作する日本を代表するジュエリーデザイナー。",
+                website: "https://www.jewel-town.com/tips/famous-jewelrydesigner/",
+                images: [
+                    "https://wako-jewelry.com/wp001/wp-content/uploads/2021/08/kessan2021_instagram02a-550x550.jpg",
+                    "http://www.esjapon.com/wp/wp-content/uploads/2016/10/Oct2016_NobukoIshikawa_Top.jpg",
+                    "https://www.optnakamura.com/wp/wp-content/uploads/2019/03/31E2BC76-02F1-477C-855E-87EBCB4A5F48-e1552157191397.jpeg"
+                ]
+            },
+            {
+                name: "岩倉 康二（いわくら こうじ）",
+                priceRange: "高級（一点物ジュエリー）",
+                priceCategory: "high",
+                materials: "貴金属、色石（多彩な宝石）",
+                materialCategory: ["gold", "gemstone"],
+                description: "「色の魔術師」と称されるほど、多彩な色彩表現と繊細な彫金技術を持つ世界的に有名な日本人デザイナー。自然モチーフの華やかなデザインが特徴。",
+                website: "https://www.jewel-town.com/tips/famous-jewelrydesigner/",
+                images: [
+                    "https://www.jewel-planet.jp/products/regets/cabinet/2019/07/0442_0.jpg",
+                    "https://tshop.r10s.jp/tjm-online/cabinet/item20230218/ref10000000033979-1.jpg?fitin=720%3A720",
+                    "https://kinkaimasu.jp/brand/column/koji_Iwakura/182673_1.jpg"
+                ]
+            },
+            {
+                name: "梶 光夫（かじ みつお）",
+                priceRange: "高級（オーダーメイド中心）",
+                priceCategory: "high",
+                materials: "貴金属、宝石",
+                materialCategory: ["gold", "gemstone"],
+                description: "クラシック＆モダンをテーマにしたジュエリーで有名。世界遺産や映画を題材にした個性的な作品も制作する革新的なデザイナー。",
+                website: "https://www.jewel-town.com/tips/famous-jewelrydesigner/",
+                images: [
+                    "https://dolvbt8sp2m5f.cloudfront.net/files/images/exhibitions/201906/exhibitions03_02.jpg",
+                    "https://greeber.jp/assets/img/jewelry/img_main_kaji.png",
+                    "https://buysell-kaitori.com/wp-content/uploads/houseki-187043060.png"
+                ]
+            },
+            {
+                name: "水野 薫子（みずの かおるこ）",
+                priceRange: "高級（一点物中心）",
+                priceCategory: "high",
+                materials: "貴金属、宝石",
+                materialCategory: ["gold", "gemstone"],
+                description: "繊細かつ女性らしいデザイン。ヴェネツィアなどをモチーフにした華やかな作風で知られる。海外ブランドとのコラボレーション実績も多数。",
+                website: "https://www.jewel-town.com/tips/famous-jewelrydesigner/",
+                images: [
+                    "https://www.jjda.or.jp/media/001/202102/MizunoKaoruko1.jpg",
+                    "https://img.komehyo.jp/contents/images/goods/f12/2600072884782_4_b.jpg",
+                    "https://japan-designers.jp/data_img/000000113/p-53196fd1add68-s.jpg"
+                ]
+            },
+            {
+                name: "村松 司（むらまつ つかさ）",
+                priceRange: "高級（美術品的ジュエリー）",
+                priceCategory: "high",
+                materials: "貴金属、宝石",
+                materialCategory: ["gold", "gemstone"],
+                description: "日本の伝統的な美意識を現代的に解釈したジュエリー。自然をモチーフにした繊細な作品は国内外で高い評価を得ている。",
+                website: "https://www.jewel-town.com/tips/famous-jewelrydesigner/",
+                images: [
+                    "https://kawanishinet.co.jp/application/files/4916/4258/3715/muramatu_03.jpg",
+                    "https://www.anshindo-grp.co.jp/blog/numazu/wp-content/uploads/sites/9/2023/06/%E6%9D%91%E6%9D%BE%E5%85%88%E7%94%9F-1.jpg",
+                    "https://t-wanted.com/wp-content/uploads/2023/11/1.webp"
+                ]
+            },
+            {
+                name: "大倉 仁（おおくら ひとし）",
+                priceRange: "高級（一点物中心）",
+                priceCategory: "high",
+                materials: "貴金属、宝石、特殊素材",
+                materialCategory: ["gold", "gemstone", "other"],
+                description: "「装身具」という概念を超えた芸術作品を制作。独自の技法で金属の表情を引き出し、国内外の美術館にも作品が収蔵されている。",
+                website: "https://www.jewel-town.com/tips/famous-jewelrydesigner/",
+                images: [
+                    "https://d1uzk9o9cg136f.cloudfront.net/f/16783302/rc/2023/02/22/8b71e887b3d790c49cb830d0abcc48a475f2b765.jpg",
+                    "https://www.okurado.co.jp/wp-content/uploads/2022/09/22981.jpg",
+                    "https://d1uzk9o9cg136f.cloudfront.net/f/16783302/rc/2023/02/22/8c1a25e2754c4484e52b071327349f797e0c7d13.jpg"
+                ]
+            },
+            {
+                name: "小寺 智子（こでら ともこ）",
+                priceRange: "高級（一点物オーダー）",
+                priceCategory: "high",
+                materials: "貴金属（プラチナ・ゴールド）、宝石",
+                materialCategory: ["gold", "gemstone"],
+                description: "人体の曲線にフィットする装着感重視のジュエリー。独創的な空間デザインが魅力で、国際コンクールでも多数受賞している実力派デザイナー。",
+                website: "https://www.tomoko-kodera.com/",
+                images: [
+                    "https://www.tomoko-kodera.com/img/home/sp-mainvisual_01.jpg",
+                    "https://www.mistore.jp/on/demandware.static/-/Sites-seamless-Library/ja_JP/dwd479a2e7/content/feature/luxury_f2/jw_japan2_w_lx/images/jw_japan2_02.jpg",
+                    "https://www.tomoko-kodera.com/img/home/mainvisual_03.jpg"
+                ]
+            },
+            {
+                name: "TOMOKO FURUSAWA JEWELRY（古澤 朋子）",
+                priceRange: "高級（10万〜30万円台）",
+                priceCategory: "high",
+                materials: "18Kゴールド、色石（各種）",
+                materialCategory: ["gold", "gemstone"],
+                description: "天然石の美しさを極限まで引き出すファインジュエリー。透明度が高く鮮やかな色石をデザイナー自ら厳選し、一点一点仕立てるリュクスなデザインが特徴。",
+                website: "https://tomokofurusawa.com/",
+                images: [
+                    "https://tomokofurusawa.com/Colorful_Stone_Ring_Series@2x.jpg",
+                    "https://img07.shop-pro.jp/PA01372/068/category/2615151_0.jpg?cmsp_timestamp=20240712105851",
+                    "https://newjewelry.jp/wp/wp-content/uploads/TF_CIBONE_3.jpg"
+                ]
+            },
+            {
+                name: "秋場 けい子（あきば けいこ）",
+                priceRange: "高級（〜数十万円台）",
+                priceCategory: "medium",
+                materials: "貴金属（K18、Ptなど）、真珠、宝石",
+                materialCategory: ["gold", "gemstone"],
+                description: "ソフトワックス原型によるふっくらとした質感が特徴。自然の実や葉を大胆かつ繊細に表現する作風で、アトリエ「atelier lala」を主宰。",
+                website: "https://www.tjapan.jp/fashion/17617805",
+                images: [
+                    "https://d1uzk9o9cg136f.cloudfront.net/f/16783302/rc/2023/03/30/4c4e0328438279d255994de112d3f45e9b3792a3_large.jpg",
+                    "https://d1uzk9o9cg136f.cloudfront.net/f/16783302/rc/2023/02/10/96d70d0ee3ead1bc2c158987b611d1ef7665f752.jpg",
+                    "https://d1uzk9o9cg136f.cloudfront.net/f/16783302/rc/2023/02/10/57d16eec16b0557f36e58ddb62980aad010a07f5.jpg"
+                ]
+            },
+            {
+                name: "永坂 景子（ながさか けいこ）",
+                priceRange: "中〜高価格帯",
+                priceCategory: "medium",
+                materials: "貴金属、宝石",
+                materialCategory: ["gold", "gemstone"],
+                description: "東京・品川の旧東海道沿いに店舗を構える。美術教師だった母の影響で工芸高校に進み、その後ジュエリーの専門学校でデザインを学んだ経歴を持つ。",
+                website: "https://www.tjapan.jp/fashion/17617805",
+                images: [
+                    "http://www.shinagawamakie.jp/images/collection01.jpg",
+                    "https://d1uzk9o9cg136f.cloudfront.net/f/16783302/rc/2023/03/13/dd9dbde9a35bd759b8256708531f9e774dee9b3c.jpg",
+                    "https://assets.st-note.com/production/uploads/images/104699173/rectangle_large_type_2_1b084ba88e4118c2a096f8792c76fac9.jpeg?fit=bounds&quality=85&width=1280"
+                ]
+            },
+            {
+                name: "lily & co.（リリーアンドコー） Mika",
+                priceRange: "中〜高価格帯（5万〜20万円台中心）",
+                priceCategory: "medium",
+                materials: "ナチュラルダイヤモンド、K18ゴールド",
+                materialCategory: ["gold", "gemstone"],
+                description: "自然のままの原石ダイヤの魅力を活かすシンプルで温もりあるデザイン。100%天然模様のダイヤを使用し、東京・港区白金台のアトリエで制作。",
+                website: "https://lilyandco.jp/",
+                images: [
+                    "https://media-01.creema.net/blog/parts/197-27c9974685caa484c2b3674c67b92090.jpg",
+                    "https://media-01.creema.net/blog/parts/197-4176f0cdda0658c1bdfa3ef5d89f65d9.jpg",
+                    "https://media-01.creema.net/blog/parts/197-c686ba3dabd561a12277a0d744518db4.jpg"
+                ]
+            },
+            {
+                name: "mykonos（ミコノス） 川柳 明子",
+                priceRange: "中価格帯（3万〜10万円台）",
+                priceCategory: "medium",
+                materials: "シルバー、天然石、パール",
+                materialCategory: ["silver", "gemstone"],
+                description: "「大人のための上質なシルバージュエリー」がコンセプト。シンプルながらも存在感のあるデザインで、日常使いからフォーマルまで幅広く対応。",
+                website: "https://mykonos-jewelry.com/",
+                images: [
+                    "https://image.isu.pub/120718200424-9c23ea30ac3d424e90ea0e7f7622b817/jpg/page_1_social_preview.jpg",
+                    "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=429453377089204",
+                    "http://stat.ameba.jp/user_images/20110813/14/mustynew/4c/2f/j/o0640048011413955887.jpg"
+                ]
+            },
+            {
+                name: "aica（アイカ） 松山 あい",
+                priceRange: "中価格帯（3万〜10万円台）",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「日常に溶け込むジュエリー」をテーマに、シンプルながらも個性的なデザインを展開。素材の質感を活かした手作業による温かみのある作品が特徴。",
+                website: "https://www.aica-jewelry.com/",
+                images: [
+                    "https://lavaguejewelry.com/wp-content/uploads/2020/10/p7180324-1.jpg",
+                    "https://lavaguejewelry.com/wp-content/uploads/2020/10/p7180241.jpg",
+                    "https://cdn.amebaowndme.com/madrid-prd/madrid-web/images/sites/112452/e10cd3b0ae613cc02f622ed2f875ff54_76c43ca6311e8988f84575d359fa49a7.jpg?width=512"
+                ]
+            },
+            {
+                name: "CAHiER（カイエ） 諏訪 由子",
+                priceRange: "中価格帯（1万〜5万円）",
+                priceCategory: "low",
+                materials: "貴金属（K10・シルバー等）、天然石（無処理のみ）",
+                materialCategory: ["gold", "silver", "gemstone"],
+                description: "合成石や着色石を使わず、天然石本来の色・形を引き立てる丁寧な細工が特徴。大ぶり石でもキュートで親しみやすいデザインが魅力。",
+                website: "https://kinarino.jp/cat1/31620",
+                images: [
+                    "https://morisruby.com/wp-content/uploads/2023/12/2-9-640x427-1.jpg",
+                    "https://kinkaimasu.jp/lounge/wp-content/uploads/2021/02/cahier_5.jpg",
+                    "https://kinkaimasu.jp/lounge/wp-content/uploads/2021/02/cahier_8.jpg"
+                ]
+            },
+            {
+                name: "Mopsoi（モプソイ）",
+                priceRange: "中価格帯（5千〜2万円前後）",
+                priceCategory: "low",
+                materials: "人工スエード、生地、天然石、ビーズ",
+                materialCategory: ["gemstone", "other"],
+                description: "刺繍技法で人工スエードに天然石やビーズを縫い付けた独創リングが代表作。モダンかつオーガニックでカジュアルにも映えるデザインが特徴。",
+                website: "https://www.iichi.com/shop/mopsoi/profile",
+                images: [
+                    "https://cdn.iichi.com/r/w/348/h/348/item/1421263/it-5b21fac799558-1200.jpg",
+                    "https://cdn.iichi.com/r/w/348/h/348/item/822631/it-56f8f77fef576-1200.jpg",
+                    "https://cdn.iichi.com/r/w/348/h/348/item/1528420/it-5c03827da8a5f-1200.jpg"
+                ]
+            },
+            {
+                name: "Art Stile（アートスティーレ）",
+                priceRange: "中価格帯（1万円前後〜）",
+                priceCategory: "low",
+                materials: "シルバー925（GP）、天然石、アンティークコイン・古代ガラス",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "イタリア人作家と共同設立。古代ギリシャ風のエスニックで一点物デザインが特徴。アンティークコインやローマングラスを用いた大胆なリングが人気。",
+                website: "https://karatz.jp/handmade-jewellery-japanese/",
+                images: [
+                    "https://karatz.jp/wp-content/uploads/2020/05/art-stile-jewelry-1.jpg",
+                    "https://karatz.jp/wp-content/uploads/2020/05/art-stile-jewelry-2.jpg",
+                    "https://karatz.jp/wp-content/uploads/2020/05/art-stile-jewelry-3.jpg"
+                ]
+            },
+            {
+                name: "Reff（レフ） 戸鋪 誠",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://cdn.iichi.com/r/w/200/avatar/646/av-4e661e6269260-640.jpg",
+                    "https://cdn.iichi.com/r/w/340/h/277/gallery/646/gl-5da3d01d905b7-340x277.jpg",
+                    "https://cdn.iichi.com/r/w/340/h/277/gallery/646/gl-5da3d01d681ec-340x277.jpg"
+                ]
+            },
+            {
+                name: "Satomi Ochi（さとみ おおち）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://pbs.twimg.com/media/GlGYXmGbIAAitTb.jpg",
+                    "https://pbs.twimg.com/media/Ghygy_cbgAA9gwI?format=jpg&name=medium",
+                    "https://pbs.twimg.com/media/GkCSMOwaAAIOaOd?format=jpg&name=large"
+                ]
+            },
+            {
+                name: "Roro Jewelry（ロロジュエリー）",
+                priceRange: "中〜高価格帯",
+                priceCategory: "medium",
+                materials: "K18ゴールド、希少石（グランディディエライト等）",
+                materialCategory: ["gold", "gemstone"],
+                description: "長野の自然の中でコツコツ制作。ブルー系希少石を好み、マットな質感の手作り感ある仕上げが特徴。",
+                website: "https://karatz.jp/handmade-jewellery-japanese/",
+                images: [
+                    "https://cdn.iichi.com/r/w/2000/gallery/16862/gl-62b12523dbdea-340x277.jpg",
+                    "https://cdn.iichi.com/r/w/348/h/348/item/2653052/it-67bc7c8203dfb-1200.jpg",
+                    "https://www.fashion-press.net/img/news/110969/uO0.jpeg"
+                ]
+            },
+            {
+                name: "Revecka（レベッカ）",
+                priceRange: "手頃（数千円）",
+                priceCategory: "low",
+                materials: "真鍮、合金、布素材など",
+                materialCategory: ["other"],
+                description: "「あったらいいな」を形にする斬新で女性らしいアクセサリー。ワンタッチでヘアアレンジが完成するカチューシャ等が人気。",
+                website: "https://minne.com/mag/articles/1178",
+                images: [
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=2293627812711488413",
+                    "https://c.p02.c4a.im/user/2404750/exhibits/9223489/1_830231e6fc4e60956ab99107b27bc04c?d=250x250",
+                    "https://c.p02.c4a.im/user/2404750/exhibits/5245607/5_c2b0e3d600b90186ceddb75374d3517e?d=500x500"
+                ]
+            },
+            {
+                name: "kodemari（コデマリ）",
+                priceRange: "手頃（1,000〜3,000円）",
+                priceCategory: "low",
+                materials: "合金、ガラス、樹脂など",
+                materialCategory: ["other"],
+                description: "「身につけると心が弾む」ポップでカラフルなアクセサリー。アパレル出身のセンスを活かし、5,000件超レビューの人気作家。",
+                website: "https://minne.com/mag/articles/1178",
+                images: [
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3505874150902780456",
+                    "https://cdn.goope.jp/171109/241225130657-676b84e18a78a_l.jpg",
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3553016488326285233"
+                ]
+            },
+            {
+                name: "R（アール）",
+                priceRange: "中価格帯",
+                priceCategory: "low",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://www.r-jewelry.com/img/main_image.jpg",
+                    "https://www.r-jewelry.com/upload/example/b06164398273e45f195b3fc039df823a.jpg",
+                    "https://r-official.info/wp-content/uploads/2024/06/IMG_5356-scaled.jpeg"
+                ]
+            },
+            {
+                name: "haiji+（ハイジプラス）",
+                priceRange: "手頃〜中価格帯",
+                priceCategory: "low",
+                materials: "天然石、ビーズ、糸など",
+                materialCategory: ["gemstone", "other"],
+                description: "世界中から集めた素材を姉妹で製作。いつものコーデにプラスするだけで雰囲気一新のカラフル華やかな作品が特徴。",
+                website: "https://minne.com/mag/articles/1178",
+                images: [
+                    "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=890166701051268",
+                    "https://c.p02.c4a.im/user/23011/exhibits/1692009/1_781b8cc35f5a7a5ebdcaf06e741ba2cabd6bd2c4?d=250x250",
+                    "https://c.p02.c4a.im/user/23011/exhibits/2431767/1_1c58de5911ebe1f2a78ef771f19bb4c0d7a506f7?d=500x500"
+                ]
+            },
+            {
+                name: "mountain*tree（マウンテンツリー）",
+                priceRange: "手頃（〜2,000円台）",
+                priceCategory: "low",
+                materials: "樹脂粘土、金具",
+                materialCategory: ["other"],
+                description: "フェイクフードのピアスやブローチを制作。まるで本物の食べ物のような質感でポップなデザインが人気。",
+                website: "https://minne.com/mag/articles/1178",
+                images: [
+                    "https://i.etsystatic.com/5763477/r/il/c6d66a/4274410074/il_570xN.4274410074_79jm.jpg",
+                    "https://cdn.mysagestore.com/74db5e032e6fecb07f3130f646bb2751/contents/NA4236_SVNECK/NA4236_SVNECK.jpg",
+                    "https://cdn.mysagestore.com/74db5e032e6fecb07f3130f646bb2751/contents/A1641_SVCHRM/A1641_SVCHRM.jpg"
+                ]
+            },
+            {
+                name: "hills ribbon（ヒルズリボン）",
+                priceRange: "手頃〜中価格帯",
+                priceCategory: "low",
+                materials: "樹脂、布、金属",
+                materialCategory: ["other"],
+                description: "繊細で美しいお花モチーフアクセサリー。和装にも合う上品なデザインで、レビュー数1000超えの人気作家。",
+                website: "https://minne.com/mag/articles/1178",
+                images: [
+                    "https://soreike-mamafesta.com/wp-content/uploads/2023/04/A1D44B84-6B90-4206-8CCA-9C12402E8213-scaled.jpeg",
+                    "https://www.craftmarche.com/wp-content/uploads/2024/05/IMG_3449.jpeg",
+                    "https://c.p02.c4a.im/images/item/16535967/0ed3bd9c23793562ee642f9fd706e6a999534896d0b5c77ef7965f6d6018f0ea?d=500x500"
+                ]
+            },
+            {
+                name: "FAVORI（ファボリ）",
+                priceRange: "手頃（2,000〜5,000円）",
+                priceCategory: "low",
+                materials: "真鍮、ガラス、合金",
+                materialCategory: ["other"],
+                description: "レトロ・アンティークテイストのアクセサリー。落ち着いた色合いながら品のある存在感で、普段使いからドレスアップまで活躍。",
+                website: "https://minne.com/mag/articles/1178",
+                images: [
+                    "https://baseec-img-mng.akamaized.net/images/shop_front/labikaraui-theshop-jp/768c108f80b3e2405094e174e19ddf3a.jpeg",
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3547277182860349247",
+                    "https://baseec-img-mng.akamaized.net/images/item/origin/3e4f93a586e77da2bae5d44cd8e426ca.jpg?imformat=generic&q=90&im=Resize,width=640,type=normal"
+                ]
+            },
+            {
+                name: "berin10（ベリンテン）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://stat.ameba.jp/user_images/20190906/15/berin10/1b/cf/j/o1080107814577654079.jpg",
+                    "http://stat.ameba.jp/user_images/20130109/14/berin10/4f/54/j/o0480045112369504068.jpg",
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3582142331363102158"
+                ]
+            },
+            {
+                name: "吹田 眞輝江（すいた まきえ）",
+                priceRange: "高級（オーダーメイド中心）",
+                priceCategory: "high",
+                materials: "貴金属、宝石、パール",
+                materialCategory: ["gold", "gemstone"],
+                description: "「装う喜び」をテーマに、女性の美しさを引き立てる上品なデザインを追求。パールを使った作品に定評があり、国内外で高い評価を得ている。",
+                website: "https://www.ginza-tomato.com/images/item/2/2_1_1.jpg",
+                images: [
+                    "https://d1uzk9o9cg136f.cloudfront.net/f/16783302/rc/2023/03/13/7df4f05cf4e7a91801f78c6a346c5a39c046a0fc.jpg",
+                    "https://d1uzk9o9cg136f.cloudfront.net/f/16783302/rc/2023/03/13/c7c006787cee5e1edea23e3a32dcdbab53be717a_normal.jpg",
+                    "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=3446081392116610"
+                ]
+            },
+            {
+                name: "井上 寛崇（いのうえ ひろたか / Hirotaka）",
+                priceRange: "中〜高価格帯（数万円〜数十万円）",
+                priceCategory: "medium",
+                materials: "貴金属（ゴールド）、天然石、パール",
+                materialCategory: ["gold", "gemstone"],
+                description: "日本的な「削ぎ落としの美」を取り入れたミニマルな自然モチーフが特徴。海外セレブにも愛用される洗練されたデザインで国際的に活躍。",
+                website: "https://hirotaka.nyc/",
+                images: [
+                    "https://t-wanted.com/wp-content/uploads/2023/10/1-800x533.jpg",
+                    "https://www.pen-online.jp/uploads/feac23544a0bd26bc6056073abde3ef5c440e090.jpg",
+                    "http://www.jewelryjournal.jp/wp/wp-content/uploads/2017/12/DSF8262.jpg"
+                ]
+            },
+            {
+                name: "alpha Vir（アルファヴィーア）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://c.p02.c4a.im/images/item/15962095/5fa1fc361fcb0608743282bf4cf95a5a9063b7d3c8639ec9a32e23d949d7e4dc?d=500x500",
+                    "https://c.p02.c4a.im/images/item/17181051/df619bcbb21322b15e00b79df72a83dfc34a51c1d7a4831772dc005afeb704ea?d=500x500",
+                    "https://c.p02.c4a.im/images/item/17287465/33a43524e34647feba2f9e5f7960c9868c352974f559f59a8027989daf40875e?d=500x500"
+                ]
+            },
+            {
+                name: "moonbric（ムーンブリック）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://media-01.creema.net/user/46580/images/1_4f904345fd4f988b590c196bd2821800_304x229.jpg",
+                    "https://baseec-img-mng.akamaized.net/images/item/origin/88ce79ee7deca08ba114b5d92ed29a8a.jpg?imformat=generic&q=90&im=Resize,width=640,type=normal",
+                    "https://c.p02.c4a.im/images/item/18457923/74120d1a206c62cb7c199cab97598ca36da8fa9b61c97d6ab309096854e29915?d=583x585"
+                ]
+            },
+            {
+                name: "Macky U.（マッキー・ユー）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://newjewelry.jp/nj2021/wp-content/uploads/2021/10/Macky-U._02-scaled.jpg",
+                    "https://c.p02.c4a.im/images/item/11177694/c62b3ac8bb1a5ebc640bea90011c63f5eab070c190edbe45338e32b6ca99109e?d=500x500",
+                    "https://newjewelry.jp/nj2021/wp-content/uploads/2021/10/Macky-U._01-scaled.jpg"
+                ]
+            },
+            {
+                name: "Star blossoms（スターブロッサムズ） HISA",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=2919187166139900161",
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3215643123265162453",
+                    "https://base-ec2.akamaized.net/images/user/blog/1339695/blog/a4a9809559a793d1aaa1ab48482ff63e.png"
+                ]
+            },
+            {
+                name: "choko.のアトリエ（チョコのアトリエ）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://media-01.creema.net/user/101437/images/1_40913bf51d9ff34f285f3055f2374755_304x229.jpg",
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3568229937872300221",
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3574777501958343723"
+                ]
+            },
+            {
+                name: "AuraVeritas（アウラヴェリタス）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://thumb-cart.fc2img.com/480x480/cart.fc2img/user_img/auraveritas/8fb2464cbe1635044c096fa9d3c8304c.jpg",
+                    "https://pbs.twimg.com/media/GkHugkxW0AAZX9q.jpg",
+                    "https://thumb-cart.fc2img.com/480x480/cart.fc2img/user_img/auraveritas/c1feca1fe7873cb6b55eb154d892ae41.jpg"
+                ]
+            },
+            {
+                name: "Felvi（フェルヴィ）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://c.p02.c4a.im/user/1935979/exhibits/10159738/0_45bb745477163ed1ec6cea21d1d38a5d?d=250x250",
+                    "https://c.p02.c4a.im/user/1935979/exhibits/6707553/2_8c2d23273a453e05b19b3cac0a51a26e?d=500x500",
+                    "https://c.p02.c4a.im/user/1935979/exhibits/6380340/2_3ae87c6735bae09e6422b17bf63f5130?d=500x400"
+                ]
+            },
+            {
+                name: "Lunon（ルノン）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3558085005681490946",
+                    "https://media-01.creema.net/user/1114521/images/1_5be15984aac22c7f5d7310bf4b0ad748_304x229.jpg",
+                    "https://www.jewelry-hattori.com/order-made_case/9000899%20%282%29%281%29.jpg"
+                ]
+            },
+            {
+                name: "anamoa flower（アナモアフラワー）",
+                priceRange: "手頃〜中価格帯",
+                priceCategory: "low",
+                materials: "樹脂、布、金属",
+                materialCategory: ["other"],
+                description: "繊細で美しいお花モチーフアクセサリー。和装にも合う上品なデザインで、レビュー数1000超えの人気作家。",
+                website: "https://minne.com/mag/articles/1178",
+                images: [
+                    "https://soreike-mamafesta.com/wp-content/uploads/2023/04/A1D44B84-6B90-4206-8CCA-9C12402E8213-scaled.jpeg",
+                    "https://www.craftmarche.com/wp-content/uploads/2024/05/IMG_3449.jpeg",
+                    "https://c.p02.c4a.im/images/item/16535967/0ed3bd9c23793562ee642f9fd706e6a999534896d0b5c77ef7965f6d6018f0ea?d=500x500"
+                ]
+            },
+            {
+                name: "Labikara（ラビカラ）",
+                priceRange: "手頃（2,000〜5,000円）",
+                priceCategory: "low",
+                materials: "真鍮、ガラス、合金",
+                materialCategory: ["other"],
+                description: "レトロ・アンティークテイストのアクセサリー。落ち着いた色合いながら品のある存在感で、普段使いからドレスアップまで活躍。",
+                website: "https://minne.com/mag/articles/1178",
+                images: [
+                    "https://baseec-img-mng.akamaized.net/images/shop_front/labikaraui-theshop-jp/768c108f80b3e2405094e174e19ddf3a.jpeg",
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3547277182860349247",
+                    "https://baseec-img-mng.akamaized.net/images/item/origin/3e4f93a586e77da2bae5d44cd8e426ca.jpg?imformat=generic&q=90&im=Resize,width=640,type=normal"
+                ]
+            },
+            {
+                name: "KAYO（かよ）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "http://kayoandcocojewelry.com/cdn/shop/products/Love__1_WT.jpg?v=1680787866",
+                    "https://kayoandcocojewelry.com/cdn/shop/files/BPRing_2.jpg?v=1728051975&width=533",
+                    "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3588477872467947021"
+                ]
+            },
+            {
+                name: "hakumokuren（ハクモクレン）",
+                priceRange: "手頃（〜2,000円台）",
+                priceCategory: "low",
+                materials: "樹脂粘土、金具",
+                materialCategory: ["other"],
+                description: "フェイクフードのピアスやブローチを制作。まるで本物の食べ物のような質感でポップなデザインが人気。",
+                website: "https://minne.com/mag/articles/1178",
+                images: [
+                    "https://gardenstory.jp/wp-content/uploads/2022/10/2b2e02a67b53ba7d0a82f231b5f7bc04.jpg",
+                    "https://c.p02.c4a.im/images/item/17425582/e790fe9329da2e4e5f1b9a2560c18c29a745c388082e7e8f8853cc28d7cb7242?d=250x250",
+                    "https://baseec-img-mng.akamaized.net/images/item/origin/fbc93570e1742ec5ed8c7d108b336c6a.jpg?imformat=generic&q=90&im=Resize,width=640,type=normal"
+                ]
+            },
+            {
+                name: "Conifer.y（コニファー・ワイ）",
+                priceRange: "中価格帯",
+                priceCategory: "medium",
+                materials: "シルバー、真鍮、天然石",
+                materialCategory: ["silver", "gemstone", "other"],
+                description: "「Ring and I」の頭文字から名付けられたブランド。シンプルながらも個性的なデザインが特徴で、日常使いしやすいアクセサリーを制作。",
+                website: "https://www.creema.jp/creator/2809920/rating/sale",
+                images: [
+                    "https://s3-ap-northeast-1.amazonaws.com/hmj-fes-contents-production/users/creation_1s/000/028/863/original/8b3ffe30-30bb-4cb8-a03b-3d863262553d20240517-6840-1wzac47.jpeg?1715990025",
+                    "https://cdn.iichi.com/r/w/640/avatar/368904/av-61fa2c2009c74-640.jpg",
+                    "https://c.p02.c4a.im/images/item/18378167/bd1a8155aedb019c0d4c2911368c2d63537ab347ac6c1ec0d9bdbe2b677700b9?d=250x250"
+                ]
+            },
+            {
+                name: "孔雀洞雑貨舗（くじゃくどう ざっかほ）",
+                priceRange: "手頃（〜2,000円台）",
+                priceCategory: "low",
+                materials: "樹脂粘土、金具",
+                materialCategory: ["other"],
+                description: "フェイクフードのピアスやブローチを制作。まるで本物の食べ物のような質感でポップなデザインが人気。",
+                website: "https://minne.com/mag/articles/1178",
+                images: [
+                    "https://pbs.twimg.com/media/GlXVYYRbMAAkZj4?format=jpg&name=large",
+                    "https://kerastyle.jp/wp-content/uploads/2017/11/kujaku01-1024x1024.jpg",
+                    "http://girls-otome.com/wp/wp-content/uploads/2014/07/kujaku-1.jpg"
+                ]
+            }
+        ];
+
+        // 価格帯でソート
+        const priceCategoryOrder = {
+            "high": 3,
+            "medium": 2,
+            "low": 1
+        };
+
+        jewelryDesigners.sort((a, b) => {
+            return priceCategoryOrder[b.priceCategory] - priceCategoryOrder[a.priceCategory];
+        });
+
+        // HTMLを生成
+        function generateSlides(designers = jewelryDesigners) {
+            // 既存のスライドを削除（フィルター適用時に再生成するため）
+            const container = document.getElementById('slide-container');
+            // イントロスライドを保持
+            const introSlide = container.querySelector('.intro-slide');
+            // アウトロスライドを保持
+            const outroSlide = container.querySelector('.outro-slide');
+            
+            // 既存のスライドをクリア（イントロとアウトロ以外）
+            while (container.children.length > 2) {
+                container.removeChild(container.children[1]);
+            }
+            
+            // 作家ごとのスライド
+            designers.forEach(jewelry => {
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                slide.dataset.priceCategory = jewelry.priceCategory;
+                slide.dataset.materialCategories = JSON.stringify(jewelry.materialCategory);
+                
+                const priceTag = document.createElement('div');
+                priceTag.className = 'price-tag';
+                priceTag.textContent = jewelry.priceRange;
+                
+                const slideImage = document.createElement('div');
+                slideImage.className = 'slide-image';
+                
+                const imageGallery = document.createElement('div');
+                imageGallery.className = 'image-gallery';
+                
+                const mainImage = document.createElement('div');
+                mainImage.className = 'main-image';
+                mainImage.innerHTML = `<img src="${jewelry.images[0]}" alt="${jewelry.name}のジュエリー">`;
+                
+                const thumbnailContainer = document.createElement('div');
+                thumbnailContainer.className = 'thumbnail-container';
+                
+                jewelry.images.forEach((img, index) => {
+                    const thumbnail = document.createElement('div');
+                    thumbnail.className = 'thumbnail';
+                    thumbnail.innerHTML = `<img src="${img}" alt="${jewelry.name}のジュエリー ${index + 1}">`;
+                    thumbnail.addEventListener('click', () => {
+                        mainImage.querySelector('img').src = img;
+                    });
+                    thumbnailContainer.appendChild(thumbnail);
+                });
+                
+                imageGallery.appendChild(mainImage);
+                imageGallery.appendChild(thumbnailContainer);
+                slideImage.appendChild(imageGallery);
+                
+                const slideContent = document.createElement('div');
+                slideContent.className = 'slide-content';
+                slideContent.innerHTML = `
+                <h2>DESIGNER</h2>
+                    <div class="designer-name">${jewelry.name}</div>
+                    <div class="description">${jewelry.description}</div>
+                <div class="materials">
+                    <h3>主な素材</h3>
+                        <p>${jewelry.materials}</p>
+                </div>
+                <div class="contact">
+                        <a href="${jewelry.website}" target="_blank">公式サイトを見る</a>
+                </div>
+                `;
+                
+                slide.appendChild(priceTag);
+                slide.appendChild(slideImage);
+                slide.appendChild(slideContent);
+                
+                // イントロスライドの後に挿入
+                container.insertBefore(slide, outroSlide);
+            });
+        }
+
+        // フィルター適用関数
+        function applyFilter() {
+            const priceFilter = document.getElementById('price-filter').value;
+            const materialFilter = document.getElementById('material-filter').value;
+            
+            // フィルタリング
+            let filteredDesigners = jewelryDesigners;
+            
+            // 価格フィルター
+            if (priceFilter !== 'all') {
+                filteredDesigners = filteredDesigners.filter(designer => designer.priceCategory === priceFilter);
+            }
+            
+            // 素材フィルター
+            if (materialFilter !== 'all') {
+                filteredDesigners = filteredDesigners.filter(designer => 
+                    designer.materialCategory && designer.materialCategory.includes(materialFilter)
+                );
+            }
+            
+            // 結果がない場合のメッセージ
+            if (filteredDesigners.length === 0) {
+                alert('条件に一致するジュエリー作家が見つかりませんでした。条件を変更してください。');
+                return;
+            }
+            
+            // スライド再生成
+            generateSlides(filteredDesigners);
+        }
+
+        // ページ読み込み時に実行
+        document.addEventListener('DOMContentLoaded', () => {
+            generateSlides();
+            
+            // プルダウンメニューの変更時に即時フィルタリングを適用
+            document.getElementById('price-filter').addEventListener('change', applyFilter);
+            document.getElementById('material-filter').addEventListener('change', applyFilter);
+            
+            // 絞り込みボタンは不要になるため、非表示にするか削除
+            const filterButton = document.getElementById('apply-filter');
+            filterButton.style.display = 'none'; // または親要素から削除
+        });
+    </script>
+</body>
+</html>
